@@ -53,15 +53,23 @@ makeBoard()
 $(document).on('keydown', (e) => {
 	console.log(e);
 
-	//g
-
-	//y
-
-	//r
-
-	//w
-
-	//b
+	if(e.keyCode === 71){
+		console.log('g');
+	//g = 71
+	} else if(e.keyCode === 89){
+		console.log('y');
+	//y = 89
+	} else if(e.keyCode === 82){
+		console.log('r');
+	//r = 82
+	} else if(e.keyCode === 87){
+		console.log('w');
+	//w = 87
+	} else if(e.keyCode === 66){
+		console.log('b');
+	//b = 66
+	}
+	
 })
 
 
