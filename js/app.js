@@ -48,28 +48,45 @@ const makeBoard = () => {
 }
 makeBoard()
 
+const clearRect = () => {
+	ctx.clearRect(0, 0, canvas.width, canvas.height)
+}
+
 // This event listener will find specific keydown presses within the document
 
 $(document).on('keydown', (e) => {
 	console.log(e);
-
+	// 
 	if(e.keyCode === 71){
+		checkerBoard.color2 = 'green'
 		console.log('g');
-	//g = 71
+	// if the g key is pressed it will change the color of the red tiles green
 	} else if(e.keyCode === 89){
+		checkerBoard.color2 = 'purple'
 		console.log('y');
-	//y = 89
+	// if the y key is pressed it will change the color of the red tiles purple
 	} else if(e.keyCode === 82){
 		console.log('r');
-	//r = 82
+		checkerBoard.color2 = 'red'
+	// if the r key is pressed it will change the color of the red tiles red again
 	} else if(e.keyCode === 87){
+		checkerBoard.color1 = 'white'
 		console.log('w');
-	//w = 87
+	// if the g key is pressed it will change the color of the black tiles white
 	} else if(e.keyCode === 66){
+		checkerBoard.color1 = 'black'
 		console.log('b');
-	//b = 66
+	// if the b key is pressed it will change the color of the black tiles black
+	} else if(e.keyCode === 13){
+		checkerBoard.color1 = 'black';
+		checkerBoard.color2 = 'red'
+	// if the enter key is pressed it will change the color of the red tiles back to red
+	// and the black tiles back to black
 	}
-	
+	// This function will clear the board after key press
+	clearRect()
+	// This function will redraw the board with the new values after key press
+	checkerBoard.color()
 })
 
 
