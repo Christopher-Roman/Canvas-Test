@@ -8,23 +8,29 @@ const ctx = canvas.getContext("2d");
 // by 2 and they equal to each other it will paint a 100x100 square black. If they are 
 // not equal it will paint a 100x100 square red. This each loop runs 7 times painting each
 // square as it goes.
-const colorBoard = () => {
-	for(let i = 0; i < 8; i++){
-		for(let j = 0; j < 8; j++){
-			if(i % 2 == j % 2){
-				ctx.fillStyle = "black";
-				ctx.fillRect(100 * i, 100 * j, 100, 100);
-			} else {
-				ctx.fillStyle = "red";
-				ctx.fillRect(100 * i, 100 * j, 100, 100);
+
+
+const checkerBoard = {
+	color1: 'black',
+	color2: 'red',
+	color() {
+		for(let i = 0; i < 8; i++){
+			for(let j = 0; j < 8; j++){
+				if(i % 2 == j % 2){
+					ctx.fillStyle = this.color1;
+					ctx.fillRect(100 * i, 100 * j, 100, 100);
+				} else {
+					ctx.fillStyle = this.color2;
+					ctx.fillRect(100 * i, 100 * j, 100, 100);
+				}
 			}
 		}
-	}
 	
+	}
 }
 
+checkerBoard.color()
 
-colorBoard()
 const makeBoard = () => {
 	for(let i = 0; i <= canvas.width; i+= 100){
 		ctx.beginPath();
@@ -41,3 +47,21 @@ const makeBoard = () => {
 	
 }
 makeBoard()
+
+// This event listener will find specific keydown presses within the document
+
+$(document).on('keydown', (e) => {
+	console.log(e);
+
+	//g
+
+	//y
+
+	//r
+
+	//w
+
+	//b
+})
+
+
