@@ -19,9 +19,11 @@ const checkerBoard = {
 				if(i % 2 == j % 2){
 					ctx.fillStyle = this.color1;
 					ctx.fillRect(100 * i, 100 * j, 100, 100);
+					ctx.closePath()
 				} else {
 					ctx.fillStyle = this.color2;
 					ctx.fillRect(100 * i, 100 * j, 100, 100);
+					ctx.closePath()
 				}
 			}
 		}
@@ -46,17 +48,43 @@ const makeBoard = () => {
 	}
 	
 }
-makeBoard()
 
-const clearRect = () => {
-	ctx.clearRect(0, 0, canvas.width, canvas.height)
+//This function will create the ball
+const charBall = {
+	x: 100,
+	y: 100,
+	r: 20,
+	rads: Math.PI * 2,
+	color: 'chartreuse',
+	draw() {
+		ctx.arc(this.x, this.y, this.r, 0, this.rads);
+		ctx.fillStyle = this.color;
+		ctx.fill();
+		ctx.closePath()
+	},
+	moveUp() {
+		this.y -= 35
+	}, 
+	moveDown() {
+		this.y += 35
+		
+	},
+	moveRight() {
+		this.x += 35
+	},
+	moveLeft() {
+		this.x -= 35
+	}
 }
 
+// makeBoard()
+const clearRect = () => {
+	ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+}
 // This event listener will find specific keydown presses within the document
 
 $(document).on('keydown', (e) => {
-	console.log(e);
-	// 
 	if(e.keyCode === 71){
 		checkerBoard.color2 = 'green'
 		console.log('g');
@@ -82,11 +110,35 @@ $(document).on('keydown', (e) => {
 		checkerBoard.color2 = 'red'
 	// if the enter key is pressed it will change the color of the red tiles back to red
 	// and the black tiles back to black
-	}
+	} 
+
+	//This key press event will move the ball up
+	else if(e.keyCode === 38){
+		if(charBall.y > 0){
+			charBall.moveUp()
+		}
+	//This key press event will move the ball down
+	} else if(e.keyCode === 40){
+		if(charBall.y < 800){
+			charBall.moveDown()
+		}
+	//This key press event will move the ball left
+	} else if(e.keyCode === 37){
+		if(charBall.x > 0){
+			charBall.moveLeft()
+		}
+	//This key press event will move the ball right
+	} else if(e.keyCode === 39){
+		if(charBall.x < 800){
+			charBall.moveRight()
+		}
+	} 
 	// This function will clear the board after key press
 	clearRect()
 	// This function will redraw the board with the new values after key press
 	checkerBoard.color()
+	//This call will create the ball after a key is pressed
+	charBall.draw()
 })
 
 
