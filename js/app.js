@@ -43,7 +43,7 @@ const checkerBoard = () => {
 		}
 
 }
-// checkerBoard();
+checkerBoard();
 // console.log(boardArray);
 
 // 	color1: 'black',
@@ -118,6 +118,7 @@ const collisionDetection = () => {
 			charBall.y < boardArray[i].y + boardArray[i].height && 
 			charBall.y + charBall.r > boardArray[i].y) {
 				boardArray[i].color = 'white'
+				console.log(boardArray[i].color);
 		}
 	}
 }
@@ -186,11 +187,11 @@ $(document).on('keydown', (e) => {
 	} 
 	// This function will clear the board after key press
 	clearCanvas()
-	// this will call the collision detection function
-	collisionDetection()
 	// This function will redraw the board with the new values after key press
 	checkerBoard();
 	//This call will create the ball after a key is pressed
 	charBall.draw()
+	// this will call the collision detection function
+	collisionDetection()
 })
 
