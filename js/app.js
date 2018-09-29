@@ -9,45 +9,79 @@ const ctx = canvas.getContext("2d");
 // not equal it will paint a 100x100 square red. This each loop runs 7 times painting each
 // square as it goes.
 
-
-const checkerBoard = {
-	color1: 'black',
-	color2: 'red',
-	color() {
-		for(let i = 0; i < 8; i++){
-			for(let j = 0; j < 8; j++){
-				if(i % 2 == j % 2){
-					ctx.fillStyle = this.color1;
-					ctx.fillRect(100 * i, 100 * j, 100, 100);
-					ctx.closePath()
-				} else {
-					ctx.fillStyle = this.color2;
-					ctx.fillRect(100 * i, 100 * j, 100, 100);
-					ctx.closePath()
-				}
-			}
-		}
-	
+class Squares {
+	constructor(x, y, color){
+	this.height = 100;
+	this.width = 100;
+	this.color = color;
+	this.x = x;
+	this.y = y;
 	}
-}
-
-checkerBoard.color()
-
-const makeBoard = () => {
-	for(let i = 0; i <= canvas.width; i+= 100){
-		ctx.beginPath();
-		ctx.moveTo(i, 0);
-		ctx.lineTo(i, canvas.width);
-		ctx.stroke()
+	draw() {
+		ctx.beginPath()
+		ctx.rect(this.x, this.y, this.height, this.width)
+		ctx.fillStyle = this.color
+		ctx.fill()
 		ctx.closePath()
-		ctx.beginPath();
-		ctx.moveTo(0, i);
-		ctx.lineTo(canvas.width, i);
-		ctx.stroke()
-		ctx.closePath();
-	}
-	
+	}	
 }
+
+
+let boardArray = []
+
+const checkerBoard = () => {
+	for(let i = 0; i < 8; i++)
+		for(let j = 0; j < 8; j++)
+		if(i % 2 == j % 2) {
+			let square = new Squares(100 * i, 100 * j, "black")
+			square.draw()
+			boardArray.push(square)
+		} else {
+			let square = new Squares(100 * i, 100 * j, "red")
+			square.draw()
+			boardArray.push(square)
+		}
+
+}
+// checkerBoard();
+// console.log(boardArray);
+
+// 	color1: 'black',
+// 	color2: 'red',
+// 	create() {
+// 		for(let i = 0; i < 8; i++){
+// 			for(let j = 0; j < 8; j++){
+// 				if(i % 2 == j % 2){
+// 					Squares.draw()
+// 				} else {
+// 					ctx.fillStyle = this.color2;
+// 					ctx.fillRect(100 * i, 100 * j, 100, 100);
+// 					ctx.closePath()
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
+// checkerBoard.create()
+
+
+
+// const makeBoard = () => {
+// 	for(let i = 0; i <= canvas.width; i+= 100){
+// 		ctx.beginPath();
+// 		ctx.moveTo(i, 0);
+// 		ctx.lineTo(i, canvas.width);
+// 		ctx.stroke()
+// 		ctx.closePath()
+// 		ctx.beginPath();
+// 		ctx.moveTo(0, i);
+// 		ctx.lineTo(canvas.width, i);
+// 		ctx.stroke()
+// 		ctx.closePath();
+// 	}
+	
+// }
 
 //This function will create the ball
 const charBall = {
@@ -57,6 +91,7 @@ const charBall = {
 	rads: Math.PI * 2,
 	color: 'chartreuse',
 	draw() {
+		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.r, 0, this.rads);
 		ctx.fillStyle = this.color;
 		ctx.fill();
@@ -66,8 +101,7 @@ const charBall = {
 		this.y -= 35
 	}, 
 	moveDown() {
-		this.y += 35
-		
+		this.y += 35	
 	},
 	moveRight() {
 		this.x += 35
@@ -77,8 +111,22 @@ const charBall = {
 	}
 }
 
+const collisionDetection = () => {
+	for(let i = 0; i < boardArray.length; i++){
+		if(charBall.x < boardArray[i].x + boardArray[i].width && 
+			charBall.x + charBall.r > boardArray[i].x && 
+			charBall.y < boardArray[i].y + boardArray[i].height && 
+			charBall.y + charBall.r > boardArray[i].y) {
+				boardArray[i].color = 'white'
+		}
+	}
+}
+
+
+// 	
+
 // makeBoard()
-const clearRect = () => {
+const clearCanvas = () => {
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
 
 }
@@ -89,23 +137,23 @@ $(document).on('keydown', (e) => {
 		checkerBoard.color2 = 'green'
 		console.log('g');
 	// if the g key is pressed it will change the color of the red tiles green
-	} else if(e.keyCode === 89){
+	} if(e.keyCode === 89){
 		checkerBoard.color2 = 'purple'
 		console.log('y');
 	// if the y key is pressed it will change the color of the red tiles purple
-	} else if(e.keyCode === 82){
+	} if(e.keyCode === 82){
 		console.log('r');
 		checkerBoard.color2 = 'red'
 	// if the r key is pressed it will change the color of the red tiles red again
-	} else if(e.keyCode === 87){
+	} if(e.keyCode === 87){
 		checkerBoard.color1 = 'white'
 		console.log('w');
 	// if the g key is pressed it will change the color of the black tiles white
-	} else if(e.keyCode === 66){
+	} if(e.keyCode === 66){
 		checkerBoard.color1 = 'black'
 		console.log('b');
 	// if the b key is pressed it will change the color of the black tiles black
-	} else if(e.keyCode === 13){
+	} if(e.keyCode === 13){
 		checkerBoard.color1 = 'black';
 		checkerBoard.color2 = 'red'
 	// if the enter key is pressed it will change the color of the red tiles back to red
@@ -113,32 +161,36 @@ $(document).on('keydown', (e) => {
 	} 
 
 	//This key press event will move the ball up
-	else if(e.keyCode === 38){
+	if(e.keyCode === 38){
 		if(charBall.y > 0){
 			charBall.moveUp()
 		}
+	} 
 	//This key press event will move the ball down
-	} else if(e.keyCode === 40){
+	if(e.keyCode === 40){
 		if(charBall.y < 800){
 			charBall.moveDown()
 		}
+	} 
 	//This key press event will move the ball left
-	} else if(e.keyCode === 37){
+	if(e.keyCode === 37){
 		if(charBall.x > 0){
 			charBall.moveLeft()
 		}
+	} 
 	//This key press event will move the ball right
-	} else if(e.keyCode === 39){
+	if(e.keyCode === 39){
 		if(charBall.x < 800){
 			charBall.moveRight()
 		}
 	} 
 	// This function will clear the board after key press
-	clearRect()
+	clearCanvas()
+	// this will call the collision detection function
+	collisionDetection()
 	// This function will redraw the board with the new values after key press
-	checkerBoard.color()
+	checkerBoard();
 	//This call will create the ball after a key is pressed
 	charBall.draw()
 })
-
 
