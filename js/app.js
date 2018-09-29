@@ -10,17 +10,19 @@ const ctx = canvas.getContext("2d");
 // square as it goes.
 
 class Squares {
-	constructor(x, y, color){
+	constructor(x, y){
 	this.height = 100;
 	this.width = 100;
-	this.color = color;
 	this.x = x;
 	this.y = y;
 	}
-	draw() {
+	update(newColor) {
+		this.color = newColor;
+	}
+	draw(color) {
 		ctx.beginPath()
 		ctx.rect(this.x, this.y, this.height, this.width)
-		ctx.fillStyle = this.color
+		ctx.fillStyle = color
 		ctx.fill()
 		ctx.closePath()
 	}	
@@ -33,17 +35,17 @@ const checkerBoard = () => {
 	for(let i = 0; i < 8; i++)
 		for(let j = 0; j < 8; j++)
 		if(i % 2 == j % 2) {
-			let square = new Squares(100 * i, 100 * j, "black")
-			square.draw()
+			let square = new Squares(100 * i, 100 * j)
+			square.draw('black')
 			boardArray.push(square)
 		} else {
-			let square = new Squares(100 * i, 100 * j, "red")
-			square.draw()
+			let square = new Squares(100 * i, 100 * j)
+			square.draw('red')
 			boardArray.push(square)
 		}
 
 }
-checkerBoard();
+// checkerBoard();
 // console.log(boardArray);
 
 // 	color1: 'black',
@@ -114,13 +116,13 @@ const charBall = {
 const collisionDetection = () => {
 	for(let i = 0; i < boardArray.length; i++){
 		if(charBall.x < boardArray[i].x + boardArray[i].width && 
-			charBall.x + charBall.r > boardArray[i].x && 
+			charBall.x + charBall.rads > boardArray[i].x && 
 			charBall.y < boardArray[i].y + boardArray[i].height && 
-			charBall.y + charBall.r > boardArray[i].y) {
-				boardArray[i].color = 'white'
-				console.log(boardArray[i].color);
+			charBall.y + charBall.rads > boardArray[i].y) {
+				boardArray[i].draw('white')
 		}
 	}
+	console.log(boardArray[63]);
 }
 
 
@@ -135,7 +137,12 @@ const clearCanvas = () => {
 
 $(document).on('keydown', (e) => {
 	if(e.keyCode === 71){
-		checkerBoard.color2 = 'green'
+		for(let i = 0; i < boardArray.length; i++){
+			if(boardArray[i].x % 2 == boardArray[i].y % 2){
+				boardArray[i].draw('green')
+				console.log(boardArray[i]);
+			}
+		}
 		console.log('g');
 	// if the g key is pressed it will change the color of the red tiles green
 	} if(e.keyCode === 89){
